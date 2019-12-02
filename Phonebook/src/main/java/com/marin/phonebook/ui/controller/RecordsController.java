@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("phonebook") // http://localhost:8080/phonebook
-public class PhonebookController {
+@RequestMapping("records") // http://localhost:8080/records
+public class RecordsController {
 
     @Autowired
     private Environment environment;
