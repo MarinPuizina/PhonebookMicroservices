@@ -13,16 +13,16 @@ public class RecordEntity implements Serializable {
     private static final long serialVersionUID = -2092928229379314635L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String personsName;
+    private String personName;
 
     @Column(nullable = false)
     private String recordType;
 
     @Column(nullable = false, unique = true)
-    private Integer phoneNumber;
+    private String phoneNumber;
 
 }

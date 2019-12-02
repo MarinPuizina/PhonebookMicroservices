@@ -8,12 +8,12 @@ import javax.validation.constraints.NotNull;
 public class CreateUpdateRecordRequestModel {
 
     @NotNull
-    private String personsName;
+    private String personName;
 
     @NotNull
     private String recordType;
 
     @NotNull
-    private Integer phoneNumber;
+    private String phoneNumber;
 
 }

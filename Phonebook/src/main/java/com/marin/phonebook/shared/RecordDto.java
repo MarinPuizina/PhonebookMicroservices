@@ -9,8 +9,8 @@ public class RecordDto implements Serializable {
 
     private static final long serialVersionUID = -195066237002034168L;
 
-    private String personsName;
+    private String personName;
     private String recordType;
-    private Integer phoneNumber;
+    private String phoneNumber;
 
 }
