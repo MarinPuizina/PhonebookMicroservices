@@ -15,8 +15,16 @@ public class RecordsServiceImpl implements RecordsService {
     private final RecordsRepository recordsRepository;
 
     @Override
-    public RecordDto createUpdateRecord(RecordDto recordDetails) {
-        return null;
+    public String createUpdateRecord(RecordDto recordDetails) {
+
+        if(recordsRepository.findByPhoneNumber(recordDetails.getPhoneNumber()) == null) {
+            createRecord(recordDetails);
+            return "Created";
+        } else {
+            updateRecord(recordDetails);
+            return "Updated";
+        }
+
     }
 
     @Override
@@ -29,11 +37,15 @@ public class RecordsServiceImpl implements RecordsService {
 
         recordsRepository.save(recordEntity);
 
+        // See if we want to make it void or maybe to return valid String
         return null;
     }
 
     @Override
     public RecordDto updateRecord(RecordDto recordDetails) {
+
+        recordsRepository.updateRecord(recordDetails.getPersonName(), recordDetails.getRecordType(), recordDetails.getPhoneNumber());
+        // See if we want to make it void or maybe to return valid String
         return null;
     }
 

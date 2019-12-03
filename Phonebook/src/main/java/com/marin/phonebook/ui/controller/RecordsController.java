@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,16 +27,20 @@ public class RecordsController {
     }
 
     @PostMapping
-    public String createUpdateRecord(@Valid @RequestBody CreateUpdateRecordRequestModel requestModel) {
+    public ResponseEntity createUpdateRecord(@Valid @RequestBody CreateUpdateRecordRequestModel requestModel) {
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         RecordDto recordDto = modelMapper.map(requestModel, RecordDto.class);
 
-        recordsService.createRecord(recordDto);
+        if (recordsService.createUpdateRecord(recordDto) == "Created") {
+            return new ResponseEntity(HttpStatus.CREATED);
+        } else if (recordsService.createUpdateRecord(recordDto) == "Updated") {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
 
-        return "createUpdateRecord() is called.";
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
 }
