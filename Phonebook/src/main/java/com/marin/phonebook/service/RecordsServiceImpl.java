@@ -8,6 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class RecordsServiceImpl implements RecordsService {
@@ -47,6 +50,23 @@ public class RecordsServiceImpl implements RecordsService {
         recordsRepository.updateRecord(recordDetails.getPersonName(), recordDetails.getRecordType(), recordDetails.getPhoneNumber());
         // See if we want to make it void or maybe to return valid String
         return null;
+    }
+
+    @Override
+    public List<RecordDto> findRecordsUsingPersonName(String personName) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        Iterable<RecordEntity> records = recordsRepository.findByPersonName(personName);
+
+        List<RecordDto> returnValue = new ArrayList<>();
+
+        for (RecordEntity record : records) {
+            returnValue.add(modelMapper.map(record, RecordDto.class));
+        }
+
+        return returnValue;
     }
 
 }

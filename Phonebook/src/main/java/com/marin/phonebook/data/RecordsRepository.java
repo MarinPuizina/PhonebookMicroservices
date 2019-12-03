@@ -6,9 +6,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface RecordsRepository extends CrudRepository<RecordEntity, Long> {
 
     RecordEntity findByPhoneNumber(String phoneNumber);
+    List<RecordEntity> findByPersonName(String personName);
+    //List<RecordEntity> findByPhoneNumber(String phonenUmber);
+    //List<RecordEntity> findByPersonNameAndPhoneNumber(String personName, String phonenUmber);
 
     @Transactional
     @Modifying
