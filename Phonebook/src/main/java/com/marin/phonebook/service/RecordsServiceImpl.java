@@ -9,6 +9,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,18 +17,21 @@ import java.util.List;
 public class RecordsServiceImpl implements RecordsService {
 
     private final RecordsRepository recordsRepository;
+    private final List<String> validRecordTypes = Arrays.asList("mobilni", "poslovni", "fiksni");
 
     @Override
     public String createUpdateRecord(RecordDto recordDetails) {
 
-        if(recordsRepository.findByPhoneNumber(recordDetails.getPhoneNumber()) == null) {
+        if( recordsRepository.findByPhoneNumber( recordDetails.getPhoneNumber() ) == null
+                && validRecordTypes.contains( recordDetails.getRecordType() ) ) {
             createRecord(recordDetails);
             return "Created";
-        } else {
+        } else if ( validRecordTypes.contains( recordDetails.getRecordType() ) ) {
             updateRecord(recordDetails);
             return "Updated";
         }
 
+        return "";
     }
 
     @Override

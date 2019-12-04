@@ -76,7 +76,7 @@ public class RecordsController {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
-    @DeleteMapping
+    @DeleteMapping // http://localhost:8011/phonebook-ms/records
     public ResponseEntity deleteRecord(@RequestBody DeleteRecordRequestModel requestModel) {
 
         recordsService.deleteRecord(requestModel.getPhoneNumber());
