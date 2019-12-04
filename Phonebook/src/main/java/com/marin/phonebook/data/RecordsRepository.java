@@ -15,6 +15,10 @@ public interface RecordsRepository extends CrudRepository<RecordEntity, Long> {
 
     @Transactional
     @Modifying
+    void deleteByPhoneNumber(String phoneNumber);
+
+    @Transactional
+    @Modifying
     @Query(value = "UPDATE records r SET r.person_name = :personName, r.record_type = :recordType WHERE r.phone_number = :phoneNumber", nativeQuery = true)
     void updateRecord(@Param("personName") String personName, @Param("recordType") String recordType, @Param("phoneNumber") String phoneNumber);
 

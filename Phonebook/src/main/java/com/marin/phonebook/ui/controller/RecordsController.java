@@ -3,6 +3,7 @@ package com.marin.phonebook.ui.controller;
 import com.marin.phonebook.service.RecordsService;
 import com.marin.phonebook.shared.RecordDto;
 import com.marin.phonebook.ui.model.request.CreateUpdateRecordRequestModel;
+import com.marin.phonebook.ui.model.request.DeleteRecordRequestModel;
 import com.marin.phonebook.ui.model.response.RecordResponseModel;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -73,5 +74,13 @@ public class RecordsController {
         RecordResponseModel returnValue = modelMapper.map(record, RecordResponseModel.class);
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteRecord(@RequestBody DeleteRecordRequestModel requestModel) {
+
+        recordsService.deleteRecord(requestModel.getPhoneNumber());
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

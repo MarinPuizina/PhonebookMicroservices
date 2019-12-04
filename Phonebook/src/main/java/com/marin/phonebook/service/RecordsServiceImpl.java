@@ -82,4 +82,9 @@ public class RecordsServiceImpl implements RecordsService {
         return returnValue;
     }
 
+    @Override
+    public void deleteRecord(String phoneNumber) {
+        recordsRepository.deleteByPhoneNumber(phoneNumber);
+    }
+
 }

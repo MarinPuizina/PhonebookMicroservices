@@ -11,4 +11,5 @@ public interface RecordsService {
     RecordDto updateRecord(RecordDto recordDetails);
     List<RecordDto> findRecordsUsingPersonName(String personName);
     RecordDto findRecordUsingPhoneNumber(String phoneNumber);
+    void deleteRecord(String phoneNumber);
 }
