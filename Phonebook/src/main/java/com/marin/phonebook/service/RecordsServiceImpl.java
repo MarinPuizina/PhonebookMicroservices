@@ -2,6 +2,7 @@ package com.marin.phonebook.service;
 
 import com.marin.phonebook.data.RecordEntity;
 import com.marin.phonebook.data.RecordsRepository;
+import com.marin.phonebook.exception.RecordsServiceException;
 import com.marin.phonebook.shared.RecordDto;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -75,7 +76,7 @@ public class RecordsServiceImpl implements RecordsService {
 
     @Override
     public RecordDto findRecordUsingPhoneNumber(String phoneNumber) {
-// TODO java.lang.IllegalArgumentException: source cannot be null
+
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -87,8 +88,16 @@ public class RecordsServiceImpl implements RecordsService {
     }
 
     @Override
-    public void deleteRecord(String phoneNumber) {
+    public void deleteRecord(String phoneNumber) throws RecordsServiceException{
+        // TODO java.lang.IllegalArgumentException: source cannot be null
+        RecordEntity record = recordsRepository.findByPhoneNumber(phoneNumber);
+
+        if (record == null || record.getPersonName().isEmpty()) {
+            throw new RecordsServiceException("Record wasn't found in the database.");
+        }
+
         recordsRepository.deleteByPhoneNumber(phoneNumber);
+
     }
 
 }

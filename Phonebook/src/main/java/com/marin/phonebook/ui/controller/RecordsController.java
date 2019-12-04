@@ -1,5 +1,6 @@
 package com.marin.phonebook.ui.controller;
 
+import com.marin.phonebook.exception.RecordsServiceException;
 import com.marin.phonebook.service.RecordsService;
 import com.marin.phonebook.shared.RecordDto;
 import com.marin.phonebook.ui.model.request.CreateUpdateRecordRequestModel;
@@ -51,7 +52,7 @@ public class RecordsController {
 
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
-    
+
     // http://localhost:8011/phonebook-ms/records/names/{name}
     @GetMapping(path = "/names/{name}")
     public ResponseEntity<List<RecordResponseModel>> getRecordByName(@PathVariable String name) {
@@ -85,7 +86,7 @@ public class RecordsController {
 
     // http://localhost:8011/phonebook-ms/records
     @DeleteMapping
-    public ResponseEntity deleteRecord(@RequestBody DeleteRecordRequestModel requestModel) {
+    public ResponseEntity deleteRecord(@RequestBody DeleteRecordRequestModel requestModel) throws RecordsServiceException {
 
         recordsService.deleteRecord(requestModel.getPhoneNumber());
 
