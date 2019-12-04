@@ -18,18 +18,18 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("records") // http://localhost:8011/records
+@RequestMapping("records") // http://localhost:8011/phonebook-ms/records
 public class RecordsController {
 
     private final Environment environment;
     private final RecordsService recordsService;
 
-    @GetMapping("/status") // http://localhost:8011/records/status
+    @GetMapping("/status") // http://localhost:8011/phonebook-ms/records/status
     public String getStatus() {
         return "Phonebook Microservice is working on the port." + environment.getProperty("local.server.port");
     }
 
-    @PostMapping
+    @PostMapping // http://localhost:8011/phonebook-ms/records
     public ResponseEntity createUpdateRecord(@Valid @RequestBody CreateUpdateRecordRequestModel requestModel) {
 
         ModelMapper modelMapper = new ModelMapper();
