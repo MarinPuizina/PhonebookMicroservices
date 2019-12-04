@@ -12,8 +12,6 @@ public interface RecordsRepository extends CrudRepository<RecordEntity, Long> {
 
     RecordEntity findByPhoneNumber(String phoneNumber);
     List<RecordEntity> findByPersonName(String personName);
-    //List<RecordEntity> findByPhoneNumber(String phonenUmber);
-    //List<RecordEntity> findByPersonNameAndPhoneNumber(String personName, String phonenUmber);
 
     @Transactional
     @Modifying

@@ -10,5 +10,5 @@ public interface RecordsService {
     RecordDto createRecord(RecordDto recordDetails);
     RecordDto updateRecord(RecordDto recordDetails);
     List<RecordDto> findRecordsUsingPersonName(String personName);
-
+    RecordDto findRecordUsingPhoneNumber(String phoneNumber);
 }

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,19 +61,17 @@ public class RecordsController {
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
-    /*
-    @GetMapping
-    public ResponseEntity<List<RecordResponseModel>> getRecordByPhone(@RequestParam(name = "phoneNumber", required = true, defaultValue = "") String phoneNumber) {
 
-        return new ResponseEntity(HttpStatus.OK);
+    @GetMapping("/phone_numbers/{phoneNumber}") // http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
+    public ResponseEntity<RecordResponseModel> getRecordByPhoneNumber(@PathVariable String phoneNumber) {
+
+        RecordDto record = recordsService.findRecordUsingPhoneNumber(phoneNumber);
+
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        RecordResponseModel returnValue = modelMapper.map(record, RecordResponseModel.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
-
-    @GetMapping
-    public ResponseEntity<List<RecordResponseModel>> getRecordByNameAndPhone(
-            @RequestParam(name = "personName", required = true, defaultValue = "") String personName,
-            @RequestParam(name = "phoneNumber", required = true, defaultValue = "") String phoneNumber) {
-
-        return new ResponseEntity(HttpStatus.OK);
-    }
-    */
 }
