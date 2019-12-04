@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +26,16 @@ public class RecordsController {
     private final Environment environment;
     private final RecordsService recordsService;
 
-    @GetMapping("/status") // http://localhost:8011/phonebook-ms/records/status
+    // http://localhost:8011/phonebook-ms/records/status
+    @GetMapping(path = "/status")
     public String getStatus() {
         return "Phonebook Microservice is working on the port." + environment.getProperty("local.server.port");
     }
 
-    @PostMapping // http://localhost:8011/phonebook-ms/records
+    // http://localhost:8011/phonebook-ms/records
+    @PostMapping(
+            consumes = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity createUpdateRecord(@Valid @RequestBody CreateUpdateRecordRequestModel requestModel) {
 
         ModelMapper modelMapper = new ModelMapper();
@@ -46,8 +51,9 @@ public class RecordsController {
 
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
-
-    @GetMapping("/names/{name}") // http://localhost:8011/phonebook-ms/records/names/{name}
+    
+    // http://localhost:8011/phonebook-ms/records/names/{name}
+    @GetMapping(path = "/names/{name}")
     public ResponseEntity<List<RecordResponseModel>> getRecordByName(@PathVariable String name) {
 
         List<RecordDto> records = recordsService.findRecordsUsingPersonName(name);
@@ -63,7 +69,8 @@ public class RecordsController {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
-    @GetMapping("/phone_numbers/{phoneNumber}") // http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
+    // http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
+    @GetMapping(path = "/phone_numbers/{phoneNumber}")
     public ResponseEntity<RecordResponseModel> getRecordByPhoneNumber(@PathVariable String phoneNumber) {
 
         RecordDto record = recordsService.findRecordUsingPhoneNumber(phoneNumber);
@@ -76,11 +83,13 @@ public class RecordsController {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
-    @DeleteMapping // http://localhost:8011/phonebook-ms/records
+    // http://localhost:8011/phonebook-ms/records
+    @DeleteMapping
     public ResponseEntity deleteRecord(@RequestBody DeleteRecordRequestModel requestModel) {
 
         recordsService.deleteRecord(requestModel.getPhoneNumber());
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
 }
