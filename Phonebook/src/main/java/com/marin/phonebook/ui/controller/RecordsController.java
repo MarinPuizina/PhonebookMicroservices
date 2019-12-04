@@ -54,7 +54,7 @@ public class RecordsController {
     }
 
     // http://localhost:8011/phonebook-ms/records/names/{name}
-    @GetMapping(path = "/names/{name}")
+    @GetMapping(path = "/names/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RecordResponseModel>> getRecordByName(@PathVariable String name) {
 
         List<RecordDto> records = recordsService.findRecordsUsingPersonName(name);
@@ -71,15 +71,18 @@ public class RecordsController {
     }
 
     // http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
-    @GetMapping(path = "/phone_numbers/{phoneNumber}")
-    public ResponseEntity<RecordResponseModel> getRecordByPhoneNumber(@PathVariable String phoneNumber) {
+    @GetMapping(path = "/phone_numbers/{phoneNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RecordResponseModel>> getRecordByPhoneNumber(@PathVariable String phoneNumber) {
 
-        RecordDto record = recordsService.findRecordUsingPhoneNumber(phoneNumber);
+        List<RecordDto> records = recordsService.findRecordUsingPhoneNumber(phoneNumber);
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        RecordResponseModel returnValue = modelMapper.map(record, RecordResponseModel.class);
+        List<RecordResponseModel> returnValue = new ArrayList<>();
+        for (RecordDto record : records) {
+            returnValue.add(modelMapper.map(record, RecordResponseModel.class));
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }

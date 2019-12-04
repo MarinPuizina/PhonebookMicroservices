@@ -59,7 +59,7 @@ public class RecordsServiceImpl implements RecordsService {
 
     @Override
     public List<RecordDto> findRecordsUsingPersonName(String personName) {
-// TODO java.lang.IllegalArgumentException: source cannot be null
+        // TODO java.lang.IllegalArgumentException: source cannot be null
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -75,14 +75,20 @@ public class RecordsServiceImpl implements RecordsService {
     }
 
     @Override
-    public RecordDto findRecordUsingPhoneNumber(String phoneNumber) {
+    public List<RecordDto> findRecordUsingPhoneNumber(String phoneNumber) {
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         RecordEntity record = recordsRepository.findByPhoneNumber(phoneNumber);
 
-        RecordDto returnValue = modelMapper.map(record, RecordDto.class);
+        List<RecordDto> returnValue = new ArrayList<>();
+
+        if (record == null) {
+            return returnValue;
+        }
+
+        returnValue.add(modelMapper.map(record, RecordDto.class));
 
         return returnValue;
     }
