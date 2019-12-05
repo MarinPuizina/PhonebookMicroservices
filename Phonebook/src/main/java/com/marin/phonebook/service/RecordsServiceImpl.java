@@ -31,7 +31,8 @@ public class RecordsServiceImpl implements RecordsService {
             createRecord(recordDetails);
             return Constants.CREATED;
 
-        } else if (validRecordTypes.contains(recordDetails.getRecordType())) {
+        } else if (recordsRepository.findByPhoneNumber(recordDetails.getPhoneNumber()) != null
+                && validRecordTypes.contains(recordDetails.getRecordType())) {
 
             updateRecord(recordDetails);
             return Constants.UPDATED;

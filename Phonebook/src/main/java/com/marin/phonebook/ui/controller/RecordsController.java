@@ -21,7 +21,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("records") // http://localhost:8011/phonebook-ms/records
+@RequestMapping("/records") // http://localhost:8011/phonebook-ms/records
 public class RecordsController {
 
     private final Environment environment;
