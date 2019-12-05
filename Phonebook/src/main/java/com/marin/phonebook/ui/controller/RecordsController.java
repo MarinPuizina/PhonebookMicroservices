@@ -2,6 +2,7 @@ package com.marin.phonebook.ui.controller;
 
 import com.marin.phonebook.exception.RecordsServiceException;
 import com.marin.phonebook.service.RecordsService;
+import com.marin.phonebook.shared.Constants;
 import com.marin.phonebook.shared.RecordDto;
 import com.marin.phonebook.ui.model.request.CreateUpdateRecordRequestModel;
 import com.marin.phonebook.ui.model.request.DeleteRecordRequestModel;
@@ -41,9 +42,9 @@ public class RecordsController {
 
         RecordDto recordDto = modelMapper.map(requestModel, RecordDto.class);
 
-        if (recordsService.createUpdateRecord(recordDto).equals("Created")) {
+        if (recordsService.createUpdateRecord(recordDto).equals(Constants.CREATED)) {
             return new ResponseEntity(HttpStatus.CREATED);
-        } else if (recordsService.createUpdateRecord(recordDto).equals("Updated")) {
+        } else if (recordsService.createUpdateRecord(recordDto).equals(Constants.UPDATED)) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
 

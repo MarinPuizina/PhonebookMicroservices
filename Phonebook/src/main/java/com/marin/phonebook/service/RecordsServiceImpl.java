@@ -4,6 +4,7 @@ import com.marin.phonebook.data.RecordEntity;
 import com.marin.phonebook.data.RecordsRepository;
 import com.marin.phonebook.exception.ErrorMessage;
 import com.marin.phonebook.exception.RecordsServiceException;
+import com.marin.phonebook.shared.Constants;
 import com.marin.phonebook.shared.RecordDto;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -26,18 +27,22 @@ public class RecordsServiceImpl implements RecordsService {
 
         if (recordsRepository.findByPhoneNumber(recordDetails.getPhoneNumber()) == null
                 && validRecordTypes.contains(recordDetails.getRecordType())) {
+
             createRecord(recordDetails);
-            return "Created";
+            return Constants.CREATED;
+
         } else if (validRecordTypes.contains(recordDetails.getRecordType())) {
+
             updateRecord(recordDetails);
-            return "Updated";
+            return Constants.UPDATED;
+
         }
 
         return "";
     }
 
     @Override
-    public RecordDto createRecord(RecordDto recordDetails) {
+    public void createRecord(RecordDto recordDetails) {
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -46,16 +51,13 @@ public class RecordsServiceImpl implements RecordsService {
 
         recordsRepository.save(recordEntity);
 
-        // See if we want to make it void or maybe to return valid String
-        return null;
     }
 
     @Override
-    public RecordDto updateRecord(RecordDto recordDetails) {
+    public void updateRecord(RecordDto recordDetails) {
 
         recordsRepository.updateRecord(recordDetails.getPersonName(), recordDetails.getRecordType(), recordDetails.getPhoneNumber());
-        // See if we want to make it void or maybe to return valid String
-        return null;
+
     }
 
     @Override
