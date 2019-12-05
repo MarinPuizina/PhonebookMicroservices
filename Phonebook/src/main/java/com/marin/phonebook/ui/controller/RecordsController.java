@@ -27,13 +27,26 @@ public class RecordsController {
     private final Environment environment;
     private final RecordsService recordsService;
 
-    // http://localhost:8011/phonebook-ms/records/status
+    /**
+     * http://localhost:8011/phonebook-ms/records/status
+     *
+     * Microservices status check.
+     *
+     * @return microservice's status and on which port it is operating
+     */
     @GetMapping(path = "/status")
     public String getStatus() {
         return "Phonebook Microservice is working on the port." + environment.getProperty("local.server.port");
     }
 
-    // http://localhost:8011/phonebook-ms/records
+    /**
+     * http://localhost:8011/phonebook-ms/records
+     *
+     * Create or update user in database.
+     *
+     * @param requestModel JSON Request model
+     * @return Http status
+     */
     @PostMapping
     public ResponseEntity createUpdateRecord(@Valid @RequestBody CreateUpdateRecordRequestModel requestModel) {
 
@@ -51,7 +64,14 @@ public class RecordsController {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    // http://localhost:8011/phonebook-ms/records/names/{name}
+    /**
+     * http://localhost:8011/phonebook-ms/records/names/{name}
+     *
+     * Get all records via using the person's name
+     *
+     * @param name Name of the person
+     * @return JSON list
+     */
     @GetMapping(path = "/names/{name}")
     public ResponseEntity<List<RecordResponseModel>> getRecordByName(@PathVariable String name) {
 
@@ -68,7 +88,14 @@ public class RecordsController {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
-    // http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
+    /**
+     * http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
+     *
+     * Get record via using the phone number.
+     *
+     * @param phoneNumber Person's phone number
+     * @return JSON list
+     */
     @GetMapping(path = "/phone_numbers/{phoneNumber}")
     public ResponseEntity<List<RecordResponseModel>> getRecordByPhoneNumber(@PathVariable String phoneNumber) {
 
@@ -85,7 +112,14 @@ public class RecordsController {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
-    // http://localhost:8011/phonebook-ms/records
+    /**
+     * http://localhost:8011/phonebook-ms/records
+     *
+     * Delete record from database using the JSON Request model.
+     *
+     * @param requestModel JSON Request model
+     * @return Http status
+     */
     @DeleteMapping
     public ResponseEntity deleteRecord(@RequestBody DeleteRecordRequestModel requestModel) throws RecordsServiceException {
 
@@ -94,7 +128,14 @@ public class RecordsController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    // http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
+    /**
+     * http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
+     *
+     * Delete record from database using the phone number.
+     *
+     * @param phoneNumber Person's phone number
+     * @return Http status
+     */
     @DeleteMapping(path = "/phone_numbers/{phoneNumber}")
     public ResponseEntity deleteRecordUri(@PathVariable String phoneNumber) {
 

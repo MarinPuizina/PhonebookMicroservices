@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class AppExceptionsHandler {
 
+    /**
+     * Handle method dedicated for handling RecordsServiceException.
+     */
     @ExceptionHandler(value = {RecordsServiceException.class})
     public ResponseEntity<Object> handleRecordsServiceException(RecordsServiceException ex, WebRequest request) {
 
