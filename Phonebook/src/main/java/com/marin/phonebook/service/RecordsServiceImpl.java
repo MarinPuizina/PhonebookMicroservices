@@ -2,6 +2,7 @@ package com.marin.phonebook.service;
 
 import com.marin.phonebook.data.RecordEntity;
 import com.marin.phonebook.data.RecordsRepository;
+import com.marin.phonebook.exception.ErrorMessage;
 import com.marin.phonebook.exception.RecordsServiceException;
 import com.marin.phonebook.shared.RecordDto;
 import lombok.AllArgsConstructor;
@@ -23,11 +24,11 @@ public class RecordsServiceImpl implements RecordsService {
     @Override
     public String createUpdateRecord(RecordDto recordDetails) {
 
-        if( recordsRepository.findByPhoneNumber( recordDetails.getPhoneNumber() ) == null
-                && validRecordTypes.contains( recordDetails.getRecordType() ) ) {
+        if (recordsRepository.findByPhoneNumber(recordDetails.getPhoneNumber()) == null
+                && validRecordTypes.contains(recordDetails.getRecordType())) {
             createRecord(recordDetails);
             return "Created";
-        } else if ( validRecordTypes.contains( recordDetails.getRecordType() ) ) {
+        } else if (validRecordTypes.contains(recordDetails.getRecordType())) {
             updateRecord(recordDetails);
             return "Updated";
         }
@@ -59,7 +60,7 @@ public class RecordsServiceImpl implements RecordsService {
 
     @Override
     public List<RecordDto> findRecordsUsingPersonName(String personName) {
-        // TODO java.lang.IllegalArgumentException: source cannot be null
+
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -94,12 +95,12 @@ public class RecordsServiceImpl implements RecordsService {
     }
 
     @Override
-    public void deleteRecord(String phoneNumber) throws RecordsServiceException{
-        // TODO java.lang.IllegalArgumentException: source cannot be null
+    public void deleteRecord(String phoneNumber) throws RecordsServiceException {
+
         RecordEntity record = recordsRepository.findByPhoneNumber(phoneNumber);
 
         if (record == null || record.getPersonName().isEmpty()) {
-            throw new RecordsServiceException("Record wasn't found in the database.");
+            throw new RecordsServiceException(ErrorMessage.RECORD_NOT_FOUND.getErrorMessage());
         }
 
         recordsRepository.deleteByPhoneNumber(phoneNumber);

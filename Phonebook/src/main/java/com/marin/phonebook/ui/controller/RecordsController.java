@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +33,7 @@ public class RecordsController {
     }
 
     // http://localhost:8011/phonebook-ms/records
-    @PostMapping(
-            consumes = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping
     public ResponseEntity createUpdateRecord(@Valid @RequestBody CreateUpdateRecordRequestModel requestModel) {
 
         ModelMapper modelMapper = new ModelMapper();
@@ -54,7 +51,7 @@ public class RecordsController {
     }
 
     // http://localhost:8011/phonebook-ms/records/names/{name}
-    @GetMapping(path = "/names/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/names/{name}")
     public ResponseEntity<List<RecordResponseModel>> getRecordByName(@PathVariable String name) {
 
         List<RecordDto> records = recordsService.findRecordsUsingPersonName(name);
@@ -71,7 +68,7 @@ public class RecordsController {
     }
 
     // http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
-    @GetMapping(path = "/phone_numbers/{phoneNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/phone_numbers/{phoneNumber}")
     public ResponseEntity<List<RecordResponseModel>> getRecordByPhoneNumber(@PathVariable String phoneNumber) {
 
         List<RecordDto> records = recordsService.findRecordUsingPhoneNumber(phoneNumber);
@@ -92,6 +89,15 @@ public class RecordsController {
     public ResponseEntity deleteRecord(@RequestBody DeleteRecordRequestModel requestModel) throws RecordsServiceException {
 
         recordsService.deleteRecord(requestModel.getPhoneNumber());
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    // http://localhost:8011/phonebook-ms/records/phone_numbers/{phoneNumber}
+    @DeleteMapping(path = "/phone_numbers/{phoneNumber}")
+    public ResponseEntity deleteRecordUri(@PathVariable String phoneNumber) {
+
+        recordsService.deleteRecord(phoneNumber);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
